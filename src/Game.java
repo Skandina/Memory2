@@ -17,10 +17,11 @@ public class Game extends BoardView {
         
         
         Card card1 = new Card(1);
+        Card card2 = new Card(2);
+        Card card3 = new Card(3);
 
         //BoardView.addtopanel(card1);
 
 
-        //System.out.println(card1.GetValue());
-    }
+        //System.out.println(card1.GetValue())
 }
