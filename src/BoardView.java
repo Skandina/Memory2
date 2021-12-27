@@ -26,7 +26,7 @@ public class BoardView implements Runnable {
     public void addtopanel(Card test){
         this.s.add(test);
         s.revalidate();
-    }
+    }ww
     */
         
 
