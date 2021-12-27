@@ -1,12 +1,11 @@
+//git push origin master --force
 import javax.swing.*;
 import java.awt.*;
-
 
 public class Game extends BoardView {
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new BoardView());
-
         /*
         JPanel panel1 = new JPanel();
         panel1.setSize(20, 50);
@@ -24,4 +23,6 @@ public class Game extends BoardView {
 
 
         //System.out.println(card1.GetValue())
+    };
 }
+
