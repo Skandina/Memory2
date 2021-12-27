@@ -15,7 +15,7 @@ public class BoardView implements Runnable {
         s.setVisible(true);
         f.add(s);
         f.setVisible(true);
-        
+        f.setVisible(true);
     }
 
     public void run() {
