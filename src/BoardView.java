@@ -4,25 +4,21 @@ import java.awt.*;
 
 public class BoardView implements Runnable {
 
-    static JPanel s;
-
-    public void BoardViewContents() {
-        JFrame f = new JFrame("Memory-game");
-        f.setSize(650, 500);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        s.setSize(80,40);
-        s.setVisible(true);
-        f.add(s);
-        f.setVisible(true);
-        f.setVisible(true); 
-
-        //TEST test
-
-    }
-
     public void run() {
-        BoardViewContents();
+        JFrame frame = new JFrame("Memory-game");
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(Color.blue);
+        panel1.setSize(300,300);
+        frame.add(panel1, BorderLayout.CENTER);
+
+        
+        frame.pack();
+        frame.setSize(650, 500);
+        frame.setVisible(true);
+
     }
 
     /*
