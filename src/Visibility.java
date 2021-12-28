@@ -1,4 +1,7 @@
 public class Visibility {
-    
-    enum statement {visible, invisible, eliminated};
+    enum statement {
+        VISIBLE, 
+        INVISIBLE, 
+        ELIMINATED
+        };
 }
