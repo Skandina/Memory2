@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class BoardView implements Runnable {
 
     public void run() {
@@ -25,7 +24,7 @@ public class BoardView implements Runnable {
         panel4.setBounds(0,200,200,200);
         panel4.setBackground(Color.yellow);  
 
-
+        
         JButton b1=new JButton("Button 1"); 
         JButton b2=new JButton("Button 2"); 
         JButton b3=new JButton("Button 3"); 
