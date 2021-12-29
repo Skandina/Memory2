@@ -1,13 +1,15 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import java.awt.*;
 
 public class BoardView implements Runnable {
+    static JButton[] buttons;
 
     public void run() {
+        
         JFrame frame = new JFrame("Memory-game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4,4,10,10));
@@ -113,7 +115,11 @@ public class BoardView implements Runnable {
         b16.setBounds(100,100,80,30);    
         b16.setBackground(Color.green);  
         */
-        panel.add(b1);
+        //panel.add(banana2);
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
+        /*panel.add(b1);
         panel.add(b2);
         panel.add(b3);
         panel.add(b4);
@@ -128,7 +134,7 @@ public class BoardView implements Runnable {
         panel.add(b13);
         panel.add(b14);
         panel.add(b15);
-        panel.add(b16);
+        panel.add(b16);*/
 
         panel2.add(new_game);
         panel2.add(end_game);
@@ -139,7 +145,9 @@ public class BoardView implements Runnable {
                 frame.add(panel4);
                 frame.setSize(700,500);    
                 frame.setLayout(null);    
-                frame.setVisible(true);    
+                frame.setVisible(true);  
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
         
     }
+
 }
