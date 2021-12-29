@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 
 
@@ -11,6 +13,7 @@ public class BoardView implements Runnable {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4,4,10,10));
         panel.setBounds(150,0,530,400); //x,y,width,heigth
+        panel.setBorder(new LineBorder(Color.BLACK));
         panel.setBackground(Color.blue);  
        
         JPanel panel2 = new JPanel();
@@ -18,12 +21,20 @@ public class BoardView implements Runnable {
         panel2.setBackground(Color.blue);  
 
         JPanel panel3 = new JPanel();
-        panel3.setBounds(0,0,200,200);
-        panel3.setBackground(Color.blue);  
+        panel3.setBounds(0,0,150,200);
+        panel3.setBackground(Color.blue); 
+        JLabel label1 = new JLabel("Player 1");
+        label1.setFont(new Font("Verdana",1,20));
+        panel3.setBorder(new LineBorder(Color.BLACK));
+        panel3.add(label1);
 
         JPanel panel4 = new JPanel();
-        panel4.setBounds(0,200,200,200);
+        panel4.setBounds(0,200,150,200);
         panel4.setBackground(Color.yellow);  
+        JLabel label2 = new JLabel("Player 2");
+        label2.setFont(new Font("Verdana",1,20));
+        panel4.setBorder(new LineBorder(Color.BLACK));
+        panel4.add(label2);
 
 
         JButton b1=new JButton("Button 1"); 
@@ -47,6 +58,13 @@ public class BoardView implements Runnable {
         JButton end_game=new JButton("End");
         new_game.setBackground(Color.green); 
         end_game.setBackground(Color.red); 
+        new_game.setForeground(Color.BLACK);
+        end_game.setForeground(Color.BLACK);
+        new_game.setPreferredSize(new Dimension(75, 25));
+        end_game.setPreferredSize(new Dimension(75, 25));
+        new_game.setBorder(new LineBorder(Color.BLACK));
+        end_game.setBorder(new LineBorder(Color.BLACK));
+
         /* 
         b1.setBounds(50,100,80,30);    
         b1.setBackground(Color.yellow); 
