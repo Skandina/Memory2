@@ -1,8 +1,13 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.swing.border.LineBorder;
 
-import java.awt.*;
 
 public class BoardView implements Runnable {
     static JButton[] buttons;
@@ -14,7 +19,6 @@ public class BoardView implements Runnable {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4,4,10,10));
         panel.setBounds(150,0,530,400); //x,y,width,heigth
-        panel.setBorder(new LineBorder(Color.BLACK));
         panel.setBackground(Color.blue);  
        
         JPanel panel2 = new JPanel();
@@ -27,7 +31,7 @@ public class BoardView implements Runnable {
         JLabel label1 = new JLabel("Player 1");
         label1.setFont(new Font("Verdana",1,20));
         panel3.setBorder(new LineBorder(Color.BLACK));
-        panel3.add(label1);
+        panel3.add(label1); 
 
         JPanel panel4 = new JPanel();
         panel4.setBounds(0,200,150,200);
@@ -37,23 +41,43 @@ public class BoardView implements Runnable {
         panel4.setBorder(new LineBorder(Color.BLACK));
         panel4.add(label2);
 
+
+        //creat imgicon 
+        String[] images = {
+            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+            "src/img/fruit05.png","src/img/fruit06.png","src/img/fruit07.png","src/img/fruit08.png"
+        };
+
+        /*
+        Icon icon1 = new ImageIcon("src/img/fruit01.png");
+        Icon icon2 = new ImageIcon("src/img/fruit02.png");
+        Icon icon3 = new ImageIcon("src/img/fruit03.png");
+        Icon icon4 = new ImageIcon("src/img/fruit04.png");
+        Icon icon5 = new ImageIcon("src/img/fruit05.png");
+        Icon icon6 = new ImageIcon("src/img/fruit06.png");
+        Icon icon7 = new ImageIcon("src/img/fruit07.png");
+        Icon icon8 = new ImageIcon("src/img/fruit08.png");
+        */
         
-        JButton b1=new JButton("Button 1"); 
-        JButton b2=new JButton("Button 2"); 
-        JButton b3=new JButton("Button 3"); 
-        JButton b4=new JButton("Button 4"); 
-        JButton b5=new JButton("Button 5"); 
-        JButton b6=new JButton("Button 6"); 
-        JButton b7=new JButton("Button 7"); 
-        JButton b8=new JButton("Button 8"); 
-        JButton b9=new JButton("Button 9"); 
-        JButton b10=new JButton("Button 10");
-        JButton b11=new JButton("Button 11"); 
-        JButton b12=new JButton("Button 12"); 
-        JButton b13=new JButton("Button 13"); 
-        JButton b14=new JButton("Button 14");
-        JButton b15=new JButton("Button 15"); 
-        JButton b16=new JButton("Button 16"); 
+        buttons = new JButton[16];
+        String[] names = {"b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8","b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"};
+        
+        /*JButton b1=new JButton();
+        JButton b2=new JButton(); 
+        JButton b3=new JButton(); 
+        JButton b4=new JButton(); 
+        JButton b5=new JButton(); 
+        JButton b6=new JButton(); 
+        JButton b7=new JButton(); 
+        JButton b8=new JButton(); 
+        JButton b9=new JButton(); 
+        JButton b10=new JButton();
+        JButton b11=new JButton(); 
+        JButton b12=new JButton(); 
+        JButton b13=new JButton(); 
+        JButton b14=new JButton();
+        JButton b15=new JButton(); 
+        JButton b16=new JButton(); */
 
         JButton new_game=new JButton("New");
         JButton end_game=new JButton("End");
@@ -65,6 +89,37 @@ public class BoardView implements Runnable {
         end_game.setPreferredSize(new Dimension(75, 25));
         new_game.setBorder(new LineBorder(Color.BLACK));
         end_game.setBorder(new LineBorder(Color.BLACK));
+        
+
+        ImageIcon banana = new ImageIcon(images[0]);
+        Image bananaIm = banana.getImage();
+        Image bananaIm2 = bananaIm.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
+        final ImageIcon banana2 = new ImageIcon(bananaIm2);
+
+        for(int i = 0; i < buttons.length; i++){
+            buttons[i] = new JButton(names[i]);
+            buttons[i].addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    JButton btn = (JButton)e.getSource();
+                    btn.setIcon(banana2);
+            
+                }  
+            });
+        }
+    
+        //JButton button7 = new JButton(icon);
+        //b1 = new JButton(icon);
+
+        /*
+        b1.addActionListener(this);
+            
+        public void actionPerformed(ActionEvent e) {
+            //b1 = new JButton(banana2);
+            banana2.setVisible(true)
+        }
+        */
+
+        
 
         /* 
         b1.setBounds(50,100,80,30);    
