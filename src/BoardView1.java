@@ -1,15 +1,12 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
 import javax.swing.border.LineBorder;
 
 
 public class BoardView1 implements Runnable {
+    static JButton[] buttons;
 
     public void run() {
         
@@ -40,35 +37,57 @@ public class BoardView1 implements Runnable {
         panel4.setBorder(new LineBorder(Color.BLACK));
         panel4.add(label2);
 
-        // TODO:
-        ImageIcon apple = new ImageIcon("src/img/fruit01.png");
-        Image appleIn = apple.getImage();
-        Image appleInA = appleIn.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
-        final ImageIcon banana2 = new ImageIcon(appleInA);
+        //creat imgicon 
+        String[] images = {
+            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+            "src/img/fruit05.png","src/img/fruit06.png","src/img/fruit07.png","src/img/fruit08.png" 
+        };
+        
+        buttons = new JButton[16];
+        String[] names = {"b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8","b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"};
+        
 
-        JButton b1=new JButton(banana2); 
-
-        b1.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
-                if (e.getSource() == b1){
-                    //Göra här
-                    
-                    
-                    JOptionPane.showMessageDialog(null, "test");
-                }
-            }  
-        });  
-
-        /*
-        b1.addActionListener(this);
-            
-        public void actionPerformed(ActionEvent e) {
-            //b1 = new JButton(banana2);
-            banana2.setVisible(true)
+        JButton new_game=new JButton("New");
+        JButton end_game=new JButton("End");
+        new_game.setBackground(Color.green); 
+        end_game.setBackground(Color.red); 
+        new_game.setForeground(Color.BLACK);
+        end_game.setForeground(Color.BLACK);
+        new_game.setPreferredSize(new Dimension(75, 25));
+        end_game.setPreferredSize(new Dimension(75, 25));
+        new_game.setBorder(new LineBorder(Color.BLACK));
+        end_game.setBorder(new LineBorder(Color.BLACK));
+        
+            for (int i = 0; i < buttons.length; i++) {
+                int index = (int) (Math.random() * (images.length - 1));
+                ImageIcon banana = new ImageIcon(images[index]);
+                Image bananaIm = banana.getImage();
+                Image bananaIm2 = bananaIm.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
+                ImageIcon banana2 = new ImageIcon(bananaIm2);
+    
+            for(int j = 0; j < buttons.length; j++){
+                buttons[i] = new JButton(names[j]);
+                buttons[i].addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e){
+                        JButton btn = (JButton)e.getSource();
+                        btn.setIcon((Icon) banana2);
+                    }  
+                });
+            }
         }
-       */
 
-        panel.add(b1);
+
+        
+
+      
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
+
+
+        panel2.add(new_game);
+        panel2.add(end_game);
+
                 frame.add(panel); 
                 frame.add(panel2); 
                 frame.add(panel3);
