@@ -4,6 +4,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class BoardView implements Runnable {
     static JButton[] buttons;
 
@@ -38,6 +42,8 @@ public class BoardView implements Runnable {
 
         // creat imgicon
         String[] images = {
+                "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+                "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
                 "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
                 "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
         };
@@ -85,25 +91,108 @@ end_game.addActionListener(al);
             Image picture = pic.getImage();
             Image fruit = picture.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
             final ImageIcon banana2 = new ImageIcon(fruit);*/
-            
+
+
+            ImageIcon[] test = new ImageIcon[16];
 
             for (int i = 0; i < buttons.length; i++) {
-            int index = (int) (Math.random() * (images.length - 1)); // Randomsize
-            ImageIcon banana = new ImageIcon(images[index]);
+            //int index = (int) (Math.random() * (images.length - 1)); // Randomsize
+            ImageIcon banana = new ImageIcon(images[i]);
             Image bananaIm = banana.getImage();
             Image bananaIm2 = bananaIm.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
             ImageIcon banana2 = new ImageIcon(bananaIm2);
+            test[i] = (banana2);
+            }
+
+            //Changing the array into a list to shuffle. 
+            List<ImageIcon> ImageList = Arrays.asList(test);
+		    //Shuffle it. 
+            Collections.shuffle(ImageList);
+		    //Chaing the list into array back again. 
+            ImageList.toArray(test);
+
 
             for (int j = 0; j < buttons.length; j++) {
-                buttons[i] = new JButton(names[i]);
+                buttons[j] = new JButton(names[j]);
+                /*
                 buttons[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         JButton btn = (JButton) e.getSource();
                         btn.setIcon((Icon) banana2);
                     }
                 });
+                */
             }
-        }
+            
+            //Matching the images to the buttons 
+            for (int i = 0; i < buttons.length; i++) {
+                buttons[i].addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JButton btn = (JButton) e.getSource();
+                        
+                        //will fix these to shorter codes. 
+                        if ((JButton) e.getSource() == buttons[0]) {
+                            btn.setIcon(test[0]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[1]) {
+                            btn.setIcon(test[1]);
+                        }
+                        if ((JButton) e.getSource() == buttons[2]) {
+                            btn.setIcon(test[2]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[3]) {
+                            btn.setIcon(test[3]);
+                        }
+                        if ((JButton) e.getSource() == buttons[4]) {
+                            btn.setIcon(test[4]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[5]) {
+                            btn.setIcon(test[5]);
+                        }
+                        if ((JButton) e.getSource() == buttons[6]) {
+                            btn.setIcon(test[6]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[7]) {
+                            btn.setIcon(test[7]);
+                        }
+                        if ((JButton) e.getSource() == buttons[8]) {
+                            btn.setIcon(test[8]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[9]) {
+                            btn.setIcon(test[9]);
+                        }
+                        if ((JButton) e.getSource() == buttons[10]) {
+                            btn.setIcon(test[10]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[11]) {
+                            btn.setIcon(test[11]);
+                        }
+                        if ((JButton) e.getSource() == buttons[12]) {
+                            btn.setIcon(test[12]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[13]) {
+                            btn.setIcon(test[13]);
+                        }
+                        if ((JButton) e.getSource() == buttons[14]) {
+                            btn.setIcon(test[14]);
+                        }
+                        
+                        if ((JButton) e.getSource() == buttons[15]) {
+                            btn.setIcon(test[15]);
+                        }
+
+                    }
+                
+                
+                });
+            }
 
         for (JButton button : buttons) {
             panel.add(button);
@@ -122,5 +211,4 @@ end_game.addActionListener(al);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
-
 }
