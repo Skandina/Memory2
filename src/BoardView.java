@@ -3,13 +3,34 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
+import javax.swing.Timer;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+//Sorry if I deleted too many uncommented codes, I edited a lot and wanted to reorganize so deleted them randomly. 
+//so make sure to copy and paste from your old project before you pull if you keep your code that I removed
+
 public class BoardView implements Runnable {
     static JButton[] buttons;
+    /*
+    int buttonIndexSave1 = 0; // First Opened Card index : 0-15
+    int buttonIndexSave2 = 0; // Second Opened card index : 0-15 
+    Timer timer;
+    int tryCount = 0; // Try count
+    int successCount = 0; 
+    */
+
+    public int getbuttonIndex(JButton btn) {
+        int index = 0;
+        for(int i=0; i<16; i++){
+            if (buttons[i] == btn) {
+                index = i; 
+            }
+        }
+        return index; 
+    }
 
     public void run() {
 
@@ -63,136 +84,53 @@ public class BoardView implements Runnable {
         end_game.setPreferredSize(new Dimension(75, 25));
         new_game.setBorder(new LineBorder(Color.BLACK));
         end_game.setBorder(new LineBorder(Color.BLACK));
+
             //Exit game button
         ActionListener al = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
         System.exit(0);
-    }
-};
+        }
+        };
+        end_game.addActionListener(al);
 
-end_game.addActionListener(al);
-
-        /*int[] times = {};
-        int indexCount = 0;
+        ImageIcon[] test = new ImageIcon[16];
 
         for (int i = 0; i < buttons.length; i++) {
-            int index = (int) (Math.random() * (images.length - 1));
-            times[i] = index;
-            for(int k = 0; k < times.length; k++) {
-                if(k == index)
-                indexCount++;
-            }
+        ImageIcon banana = new ImageIcon(images[i]);
+        Image bananaIm = banana.getImage();
+        Image bananaIm2 = bananaIm.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
+        ImageIcon banana2 = new ImageIcon(bananaIm2);
+        test[i] = (banana2);
+        }
 
-            if(indexCount > 2);
-                index = index+1;
+        //Changing the array into a list to shuffle. 
+        List<ImageIcon> ImageList = Arrays.asList(test);
+		//Shuffle it. 
+        Collections.shuffle(ImageList);
+		//Changing the list into the array back again. 
+        ImageList.toArray(test);
 
-            ImageIcon pic = new ImageIcon(images[index]);
-            Image picture = pic.getImage();
-            Image fruit = picture.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
-            final ImageIcon banana2 = new ImageIcon(fruit);*/
-
-
-            ImageIcon[] test = new ImageIcon[16];
-
-            for (int i = 0; i < buttons.length; i++) {
-            //int index = (int) (Math.random() * (images.length - 1)); // Randomsize
-            ImageIcon banana = new ImageIcon(images[i]);
-            Image bananaIm = banana.getImage();
-            Image bananaIm2 = bananaIm.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
-            ImageIcon banana2 = new ImageIcon(bananaIm2);
-            test[i] = (banana2);
-            }
-
-            //Changing the array into a list to shuffle. 
-            List<ImageIcon> ImageList = Arrays.asList(test);
-		    //Shuffle it. 
-            Collections.shuffle(ImageList);
-		    //Chaing the list into array back again. 
-            ImageList.toArray(test);
-
-
-            for (int j = 0; j < buttons.length; j++) {
+        for (int j = 0; j < buttons.length; j++) {
                 buttons[j] = new JButton(names[j]);
-                /*
-                buttons[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        JButton btn = (JButton) e.getSource();
-                        btn.setIcon((Icon) banana2);
-                    }
-                });
-                */
-            }
-            
-            //Matching the images to the buttons 
-            for (int i = 0; i < buttons.length; i++) {
-                buttons[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        JButton btn = (JButton) e.getSource();
-                        
-                        //will fix these to shorter codes. 
-                        if ((JButton) e.getSource() == buttons[0]) {
-                            btn.setIcon(test[0]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[1]) {
-                            btn.setIcon(test[1]);
-                        }
-                        if ((JButton) e.getSource() == buttons[2]) {
-                            btn.setIcon(test[2]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[3]) {
-                            btn.setIcon(test[3]);
-                        }
-                        if ((JButton) e.getSource() == buttons[4]) {
-                            btn.setIcon(test[4]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[5]) {
-                            btn.setIcon(test[5]);
-                        }
-                        if ((JButton) e.getSource() == buttons[6]) {
-                            btn.setIcon(test[6]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[7]) {
-                            btn.setIcon(test[7]);
-                        }
-                        if ((JButton) e.getSource() == buttons[8]) {
-                            btn.setIcon(test[8]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[9]) {
-                            btn.setIcon(test[9]);
-                        }
-                        if ((JButton) e.getSource() == buttons[10]) {
-                            btn.setIcon(test[10]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[11]) {
-                            btn.setIcon(test[11]);
-                        }
-                        if ((JButton) e.getSource() == buttons[12]) {
-                            btn.setIcon(test[12]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[13]) {
-                            btn.setIcon(test[13]);
-                        }
-                        if ((JButton) e.getSource() == buttons[14]) {
-                            btn.setIcon(test[14]);
-                        }
-                        
-                        if ((JButton) e.getSource() == buttons[15]) {
-                            btn.setIcon(test[15]);
-                        }
+        }
 
-                    }
+        //Matching the images to the buttons 
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+
+
+                JButton btn = (JButton) e.getSource();
+                int index = getbuttonIndex(btn);
+                btn.setIcon(test[index]);
+                //System.out.println("Button index :" +index);
+
+
+                }
                 
-                
-                });
-            }
+            });
+        }
 
         for (JButton button : buttons) {
             panel.add(button);
@@ -211,4 +149,5 @@ end_game.addActionListener(al);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
+
 }
