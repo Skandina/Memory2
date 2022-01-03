@@ -94,6 +94,15 @@ public class BoardView implements Runnable {
         };
         end_game.addActionListener(al);
 
+        ActionListener a2 = new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+            }
+        };
+        //new_game.addActionListener(a2);
+
         ImageIcon[] test = new ImageIcon[16];
 
         for (int i = 0; i < buttons.length; i++) {
