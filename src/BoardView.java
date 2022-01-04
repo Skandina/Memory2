@@ -73,7 +73,8 @@ public class BoardView implements Runnable {
             "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"
     };
 
-    // Shuffle
+    /*
+    // Shuffle 2 
     public void mixCard() {
         Random rand = new Random();
         for(int i=0; i<1000; i++) { 
@@ -82,10 +83,11 @@ public class BoardView implements Runnable {
             images[0] = images[random];
             images[random] = temp;
         }
-
+    
         for(int i=0; i<16; i++)
             System.out.println(images[i]);
     }
+    */
 
     public void run() {
         // Setting the frame and panels.
@@ -147,7 +149,7 @@ public class BoardView implements Runnable {
 
         buttons = new JButton[16];
 
-        ImageIcon[] IconList = new ImageIcon[16];
+        //ImageIcon[] IconList = new ImageIcon[16];
         
         //Setting up the image size. 
         for (int i = 0; i < buttons.length; i++) {
@@ -158,14 +160,15 @@ public class BoardView implements Runnable {
             IconList[i] = (all_imagesMain);
 
         }
-        /*
+
+        // suffle 1
         // Changing the array into a list to shuffle.
         List<ImageIcon> ImageList = Arrays.asList(IconList);
         // Shuffle it.
         Collections.shuffle(ImageList);
         // Changing the list into the array back again.
         ImageList.toArray(IconList);
-        */
+        
 
         for (int j = 0; j < buttons.length; j++) {
             buttons[j] = new JButton(names[j]);
@@ -188,12 +191,14 @@ public class BoardView implements Runnable {
 
                     if (openCount == 1) {
                         buttonIndexSave1 = index;
-
+                        System.out.println(index);
                     } else if (openCount == 2) {
                         buttonIndexSave2 = index;
+                        System.out.println(index);
 
                         // not sure it's working?
                         boolean getScore = checkCard(buttonIndexSave1, buttonIndexSave2);
+                        // same cards 
                         if (getScore == true) {
                             openCount = 0;
                             successCount++;

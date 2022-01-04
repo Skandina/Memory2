@@ -21,3 +21,10 @@ Card:
 Visibility:
 1. Synligheten hos ett kort: VISIBLE, INVISIBLE, ELIMINATED (spelare har hittat par)
 2. Enum
+
+
+
+
+///////////////777
+Första justera new game göra en reset 
+hitta 2 samma bild ska blir gröna button 
