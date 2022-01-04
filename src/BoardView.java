@@ -8,7 +8,10 @@ import javax.swing.Timer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+//import java.util.Random;
+
+//Vad vi behöver göra: Fix this: can't get shuffeled array, remove the cards which is same (elimated), restart game, which player is active (player1, player2). 
+//Choose winner by checking the points
 
 public class BoardView implements Runnable {
     static JButton[] buttons;
@@ -47,26 +50,12 @@ public class BoardView implements Runnable {
         timer.start();
     }
 
-    // Checking the cards if it's the same.
-    public boolean checkCard(int index1, int index2) {
-        if (index1 == index2) {
-            return false;
-        }
-
-        if (images[index1].equals(images[index2])) {
-            return true;
-
-        } else {
-            return false;
-        }
-    }
-
     // creat imgicon
     String[] images = {
             "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
             "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
             "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
+            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
     };
 
     String[] names = {
@@ -88,6 +77,23 @@ public class BoardView implements Runnable {
             System.out.println(images[i]);
     }
     */
+    // Checking the cards if it's the same.
+    // TODO: Problem is we are not using the shuffeled images array.
+    public boolean checkCard(int index1, int index2) {
+        // same postion 
+        if (index1 == index2) {
+            System.out.println("index1 == index2");
+            return false;
+        }
+        if (images[index1].equals(images[index2])) {
+            System.out.println("true");
+            return true;
+        } else {
+            System.out.println("false");
+            return false;
+        }
+    }
+    
 
     public void run() {
         // Setting the frame and panels.
@@ -137,11 +143,12 @@ public class BoardView implements Runnable {
             }
         };
         end_game.addActionListener(al);
-
+        
         // Restarts the game
         ActionListener a2 = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                    frame.repaint();
 
             }
         };
@@ -151,6 +158,7 @@ public class BoardView implements Runnable {
 
         //ImageIcon[] IconList = new ImageIcon[16];
         
+    
         //Setting up the image size. 
         for (int i = 0; i < buttons.length; i++) {
             ImageIcon all_images = new ImageIcon(images[i]);
@@ -160,7 +168,7 @@ public class BoardView implements Runnable {
             IconList[i] = (all_imagesMain);
 
         }
-
+        
         // suffle 1
         // Changing the array into a list to shuffle.
         List<ImageIcon> ImageList = Arrays.asList(IconList);
@@ -169,7 +177,9 @@ public class BoardView implements Runnable {
         // Changing the list into the array back again.
         ImageList.toArray(IconList);
         
+        System.out.println(Arrays.toString(IconList));
 
+        
         for (int j = 0; j < buttons.length; j++) {
             buttons[j] = new JButton(names[j]);
         }
@@ -191,10 +201,10 @@ public class BoardView implements Runnable {
 
                     if (openCount == 1) {
                         buttonIndexSave1 = index;
-                        System.out.println(index);
+                        System.out.println(buttonIndexSave1);
                     } else if (openCount == 2) {
                         buttonIndexSave2 = index;
-                        System.out.println(index);
+                        System.out.println(buttonIndexSave2);
 
                         // not sure it's working?
                         boolean getScore = checkCard(buttonIndexSave1, buttonIndexSave2);
