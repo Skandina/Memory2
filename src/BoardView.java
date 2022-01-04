@@ -8,35 +8,36 @@ import javax.swing.Timer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class BoardView implements Runnable {
     static JButton[] buttons;
-    
-    int openCount = 0; // Opened Card Count : 0, 1, 2 
-    int buttonIndexSave1 = 0; // First Opened Card index : 0-15
-    int buttonIndexSave2 = 0; // Second Opened card index : 0-15 
-    Timer timer;
-    int successCount = 0; 
-    
 
-    //The method to get button's Index
+    int openCount = 0; // Opened Card Count : 0, 1, 2
+    int buttonIndexSave1 = 0; // First Opened Card index : 0-15
+    int buttonIndexSave2 = 0; // Second Opened card index : 0-15
+    Timer timer;
+    int successCount = 0;
+    ImageIcon[] IconList = new ImageIcon[16];
+
+    // The method to get button's Index
     public int getbuttonIndex(JButton btn) {
         int index = 0;
-        for(int i=0; i<16; i++){
+        for (int i = 0; i < 16; i++) {
             if (buttons[i] == btn) {
-                index = i; 
+                index = i;
             }
         }
-        return index; 
+        return index;
     }
 
-    //The method to flip the cards back after 2 cards have shown with timer.
+    // Timer, flip back the cards.
     public void flipIt() {
-        //Timer 1Second
+        // Timer 1 second
         timer = new Timer(1000, new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                openCount = 0; 
+            public void actionPerformed(ActionEvent e) {
+                openCount = 0;
                 buttons[buttonIndexSave1].setIcon(null);
                 buttons[buttonIndexSave2].setIcon(null);
                 timer.stop();
@@ -46,41 +47,48 @@ public class BoardView implements Runnable {
         timer.start();
     }
 
-    //The method to check if the cards are same cards or not. 
-    public boolean checkCard(int index1, int index2){
-        if(index1 == index2) {
+    // Checking the cards if it's the same.
+    public boolean checkCard(int index1, int index2) {
+        if (index1 == index2) {
             return false;
         }
-        //System.out.println(images[index1]);
-        //System.out.println(images[index2]);
 
-        if(images[index1].equals(images[index2])){
+        if (images[index1].equals(images[index2])) {
             return true;
 
         } else {
             return false;
         }
     }
-        public void Restart() {
-            timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    System.out.println("Timer");
-                }
-            });
-            timer.start();
-        }
-            // creat imgicon
-        String[] images = {
-                "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-                "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
-                "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-                "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
-        };
-       
-    public void run() {
 
-        //Setting the frame and panels. 
+    // creat imgicon
+    String[] images = {
+            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
+            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
+    };
+
+    String[] names = {
+            "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"
+    };
+
+    // Shuffle
+    public void mixCard() {
+        Random rand = new Random();
+        for(int i=0; i<1000; i++) { 
+            int random = rand.nextInt(15)+1; 
+            String temp = images[0];
+            images[0] = images[random];
+            images[random] = temp;
+        }
+
+        for(int i=0; i<16; i++)
+            System.out.println(images[i]);
+    }
+
+    public void run() {
+        // Setting the frame and panels.
         JFrame frame = new JFrame("Memory-game");
 
         JPanel panel = new JPanel();
@@ -95,7 +103,6 @@ public class BoardView implements Runnable {
         JPanel panel3 = new JPanel();
         panel3.setBounds(0, 0, 150, 200);
         panel3.setBackground(Color.blue);
-
         JLabel label1 = new JLabel("Player 1");
         label1.setFont(new Font("Verdana", 1, 20));
         panel3.setBorder(new LineBorder(Color.BLACK));
@@ -109,12 +116,6 @@ public class BoardView implements Runnable {
         panel4.setBorder(new LineBorder(Color.BLACK));
         panel4.add(label2);
 
-        //Setting the buttons for 16 cards and new/exit.
-        buttons = new JButton[16];
-        String[] names = { 
-            "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16" 
-        };
-
         JButton new_game = new JButton("New");
         JButton end_game = new JButton("End");
         new_game.setBackground(Color.green);
@@ -126,86 +127,92 @@ public class BoardView implements Runnable {
         new_game.setBorder(new LineBorder(Color.BLACK));
         end_game.setBorder(new LineBorder(Color.BLACK));
 
-        //Exit game button
+        // Exit game button
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            System.exit(0);
+                System.exit(0);
             }
         };
         end_game.addActionListener(al);
 
-        //New game button 
-        //To do.. 
+        // Restarts the game
+        ActionListener a2 = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-        //Creating ImageIcon and set up the proper size.
+            }
+        };
+        new_game.addActionListener(a2);
+
+        buttons = new JButton[16];
+
         ImageIcon[] IconList = new ImageIcon[16];
-
+        
+        //Setting up the image size. 
         for (int i = 0; i < buttons.length; i++) {
-        ImageIcon banana = new ImageIcon(images[i]);
-        Image bananaIm = banana.getImage();
-        Image bananaIm2 = bananaIm.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); 
-        ImageIcon banana2 = new ImageIcon(bananaIm2);
-        IconList[i] = (banana2);
-        }
+            ImageIcon all_images = new ImageIcon(images[i]);
+            Image all_imagesIn = all_images.getImage();
+            Image all_imagesIn2 = all_imagesIn.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+            ImageIcon all_imagesMain = new ImageIcon(all_imagesIn2);
+            IconList[i] = (all_imagesMain);
 
-        //Changing the array into a list to shuffle. 
+        }
+        /*
+        // Changing the array into a list to shuffle.
         List<ImageIcon> ImageList = Arrays.asList(IconList);
-		//Shuffle it. 
+        // Shuffle it.
         Collections.shuffle(ImageList);
-		//Changing the list into the array back again. 
+        // Changing the list into the array back again.
         ImageList.toArray(IconList);
+        */
 
         for (int j = 0; j < buttons.length; j++) {
-                buttons[j] = new JButton(names[j]);
+            buttons[j] = new JButton(names[j]);
         }
 
-        //Matching the images to the buttons 
+        // Matching the images to the buttons
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
-                if(openCount == 2) {
-                    return;
-                }
-
-                JButton btn = (JButton) e.getSource();
-                int index = getbuttonIndex(btn);
-                btn.setIcon(IconList[index]);
-
-                openCount++;
-
-                //Have an issue here in 'index', have to get the image's name and compare 
-                if(openCount == 1){
-                    buttonIndexSave1 = index;
-
-                } else if(openCount == 2){
-                    buttonIndexSave2 = index;
-
-                System.out.println(buttonIndexSave1);
-                System.out.println(buttonIndexSave2);
-
-                    //not sure it's working?
-                    boolean getScore = checkCard(buttonIndexSave1, buttonIndexSave2);
-                    if ( getScore == true ) {
-                        openCount = 0;
-                        successCount++;
-
-                        label1.setText(Integer.toString(successCount));
-                        
-                        if(successCount == 8){
-                            //Todo.. 
-                            //setText : Game Over! The winner is ..
-                            //reset game  
-                        }
-
-                    } else {
-                        flipIt();
+                    if (openCount == 2) {
+                        return;
                     }
+
+                    JButton btn = (JButton) e.getSource();
+                    int index = getbuttonIndex(btn);
+                    btn.setIcon(IconList[index]);
+
+                    openCount++;
+
+                    if (openCount == 1) {
+                        buttonIndexSave1 = index;
+
+                    } else if (openCount == 2) {
+                        buttonIndexSave2 = index;
+
+                        // not sure it's working?
+                        boolean getScore = checkCard(buttonIndexSave1, buttonIndexSave2);
+                        if (getScore == true) {
+                            openCount = 0;
+                            successCount++;
+
+                            label1.setText(Integer.toString(successCount));
+
+                            if (successCount == 8) {
+                                // Todo..
+                                // setText : Game Over! The winner is ..
+                                // reset game
+                            }
+
+                        } else {
+                            flipIt();
+                        }
+                    }
+
                 }
-                
-                }
-                
+
             });
         }
 
