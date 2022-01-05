@@ -5,13 +5,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.Timer;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-//import java.util.Random;
+import java.util.Random;
 
-//Vad vi behöver göra: Fix this: can't get shuffeled array, remove the cards which is same (elimated), restart game, which player is active (player1, player2). 
-//Choose winner by checking the points
+//My code
+
+//Vad vi behöver göra:  Fix this: remove the cards which is same (elimated), restart game, which player is active (player1, player2). 
+//Choose winner by checking the points. 
 
 public class BoardView implements Runnable {
     static JButton[] buttons;
@@ -21,7 +20,21 @@ public class BoardView implements Runnable {
     int buttonIndexSave2 = 0; // Second Opened card index : 0-15
     Timer timer;
     int successCount = 0;
-    ImageIcon[] IconList = new ImageIcon[16];
+    ImageIcon[] iconList = new ImageIcon[16];
+    Player p1 = new Player("Kevenn", true);
+    Player p2 = new Player("Dinaaa", false);
+
+    static String[] images = {
+        "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+        "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
+        "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+        "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
+    };
+
+        //Button's name array 
+        String[] names = {
+            "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"
+    };
 
     // The method to get button's Index
     public int getbuttonIndex(JButton btn) {
@@ -34,7 +47,16 @@ public class BoardView implements Runnable {
         return index;
     }
 
-    // Timer, flip back the cards.
+    //The method to edit picture's size.
+    static ImageIcon changeImage(String filename) {
+            ImageIcon icon = new ImageIcon(filename);
+            Image originImage = icon.getImage();
+            Image changedImage = originImage.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+            ImageIcon new_icon = new ImageIcon(changedImage);
+            return new_icon;    
+    }
+
+    // The method for timer and to flip back the cards.
     public void flipIt() {
         // Timer 1 second
         timer = new Timer(1000, new ActionListener() {
@@ -50,20 +72,22 @@ public class BoardView implements Runnable {
         timer.start();
     }
 
-    // creat imgicon
-    String[] images = {
-            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
-            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
-    };
+    public void removeIt() {
+        //Timer 1 second 
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openCount = 0;
+                buttons[buttonIndexSave1].setVisible(false);
+                buttons[buttonIndexSave2].setVisible(false);
+                timer.stop();
+            }
 
-    String[] names = {
-            "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"
-    };
+        });
+        timer.start();
+    }
 
-    /*
-    // Shuffle 2 
+    //The method to shuffle. 
     public void mixCard() {
         Random rand = new Random();
         for(int i=0; i<1000; i++) { 
@@ -76,26 +100,29 @@ public class BoardView implements Runnable {
         for(int i=0; i<16; i++)
             System.out.println(images[i]);
     }
-    */
+    
+
     // Checking the cards if it's the same.
-    // TODO: Problem is we are not using the shuffeled images array.
     public boolean checkCard(int index1, int index2) {
-        // same postion 
+        // clicked same postion ?
         if (index1 == index2) {
             System.out.println("index1 == index2");
             return false;
-        }
-        if (images[index1].equals(images[index2])) {
+
+        // clicked same images ?
+        } else if(images[index1].equals(images[index2])) {
             System.out.println("true");
             return true;
+
+        // clicked different images ?
         } else {
-            System.out.println("false");
             return false;
         }
     }
-    
 
+    
     public void run() {
+
         // Setting the frame and panels.
         JFrame frame = new JFrame("Memory-game");
 
@@ -110,19 +137,29 @@ public class BoardView implements Runnable {
 
         JPanel panel3 = new JPanel();
         panel3.setBounds(0, 0, 150, 200);
-        panel3.setBackground(Color.blue);
+        panel3.setBackground(Color.YELLOW);
+
+        JPanel panel4 = new JPanel();
+        panel4.setBounds(0, 200, 150, 200);
+        panel4.setBackground(Color.GRAY);
+
         JLabel label1 = new JLabel("Player 1");
         label1.setFont(new Font("Verdana", 1, 20));
         panel3.setBorder(new LineBorder(Color.BLACK));
         panel3.add(label1);
 
-        JPanel panel4 = new JPanel();
-        panel4.setBounds(0, 200, 150, 200);
-        panel4.setBackground(Color.yellow);
+        JLabel labelscore1 = new JLabel("Score :");
+        labelscore1.setFont(new Font("Verdana", 1, 20));
+        panel3.add((labelscore1), BorderLayout.SOUTH);
+
         JLabel label2 = new JLabel("Player 2");
         label2.setFont(new Font("Verdana", 1, 20));
         panel4.setBorder(new LineBorder(Color.BLACK));
         panel4.add(label2);
+
+        JLabel labelscore2 = new JLabel("Score :");
+        labelscore2.setFont(new Font("Verdana", 1, 20));
+        panel4.add(labelscore2);
 
         JButton new_game = new JButton("New");
         JButton end_game = new JButton("End");
@@ -156,30 +193,9 @@ public class BoardView implements Runnable {
 
         buttons = new JButton[16];
 
-        //ImageIcon[] IconList = new ImageIcon[16];
-        
-    
-        //Setting up the image size. 
-        for (int i = 0; i < buttons.length; i++) {
-            ImageIcon all_images = new ImageIcon(images[i]);
-            Image all_imagesIn = all_images.getImage();
-            Image all_imagesIn2 = all_imagesIn.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
-            ImageIcon all_imagesMain = new ImageIcon(all_imagesIn2);
-            IconList[i] = (all_imagesMain);
+        //Shuffle the cards.
+        mixCard();
 
-        }
-        
-        // suffle 1
-        // Changing the array into a list to shuffle.
-        List<ImageIcon> ImageList = Arrays.asList(IconList);
-        // Shuffle it.
-        Collections.shuffle(ImageList);
-        // Changing the list into the array back again.
-        ImageList.toArray(IconList);
-        
-        System.out.println(Arrays.toString(IconList));
-
-        
         for (int j = 0; j < buttons.length; j++) {
             buttons[j] = new JButton(names[j]);
         }
@@ -188,42 +204,65 @@ public class BoardView implements Runnable {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
+                    
                     if (openCount == 2) {
                         return;
                     }
 
                     JButton btn = (JButton) e.getSource();
                     int index = getbuttonIndex(btn);
-                    btn.setIcon(IconList[index]);
+                    btn.setIcon(changeImage(images[index]));
 
                     openCount++;
 
                     if (openCount == 1) {
                         buttonIndexSave1 = index;
                         System.out.println(buttonIndexSave1);
+
                     } else if (openCount == 2) {
                         buttonIndexSave2 = index;
                         System.out.println(buttonIndexSave2);
 
-                        // not sure it's working?
                         boolean getScore = checkCard(buttonIndexSave1, buttonIndexSave2);
-                        // same cards 
-                        if (getScore == true) {
-                            openCount = 0;
-                            successCount++;
 
-                            label1.setText(Integer.toString(successCount));
+                        // Will the player get score? 
+                        if (getScore == true) {
+                            openCount = 0; // reset open Count.
+                            successCount = 1; // How many times the players succeeded
+                            
+                            /*
+                            //if player 1 active, => get player 1 only 1 point. 
+                            //if player 1 get one point, the active boolean is still true.
+                            p1.setMyTurn(true);
+                            p2.setMyTurn(false);
+                            System.out.println(p1.getmyTurn);
+
+                            if ((p1.getmyTurn)=(true)) {
+                            */
+                            labelscore1.setText("Score : " + successCount++);
+                            /*
+                            } else if ((p2.getmyTurn()) == true) {
+                                labelscore2.setText("Score : " + successCount++);
+                            }
+                            */
+
+                            removeIt();
 
                             if (successCount == 8) {
                                 // Todo..
                                 // setText : Game Over! The winner is ..
                                 // reset game
                             }
-
+                            
                         } else {
                             flipIt();
-                        }
+
+                            //active boolean is changed true => false or false => true 
+                            
+
+
+
+                        } 
                     }
 
                 }

@@ -1,6 +1,37 @@
-public class Player{
-    boolean p1_status,p2_status;
-    int p1_points,p2_points;
-    String p1_name = "Player 1";
-    String p2_name = "Player 2";
+public class Player {
+    
+    private String name;
+    private int score;
+    private boolean myTurn; // active or inactive 
+
+    public Player(String name, boolean myTurn) {
+        this.name = name;
+        this.myTurn = myTurn;
+        this.score = 0;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int addScore() {
+        return this.score++;
+    }
+
+    public void setMyTurn(boolean myTurn) {
+        this.myTurn = myTurn;
+    }
+    
+    
+    public String getName() {
+        return this.name;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public boolean isMyTurn() {
+        return this.myTurn;
+    }
 }
