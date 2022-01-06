@@ -16,47 +16,59 @@ public class BoardView1 implements Runnable {
     static Card[] cards;
     static int counter = 0;
     static Timer timer;
+
+    int index1;
+    int index2;
     //int i1 = -1;
     //int i2 = -1;
     
-    public void check() {
-    
+    public int check (int index1, int index2) {
         
-        if(counter == 2) {
-            int i1 = -1;
-            int i2 = -1;
-        
+        //if(counter == 2) {
+            //int i1 = -1;
+            //int i2 = -1;
+
+            int i1 = index1;
+            int i2 = index2;
+            /*
             //Organizing(??) // 
             for (int j = 0; j < cards.length; j++) {
                 // which player turned the same cards? if getResolved = 1 : player 1, 2 : player 2 && 
                 if((cards[j].getResolved() == 0) && (cards[j].getStatus())) { 
-                    if(i1 == -1) i1 = j; //Kanske fel här? J = 0
-                    else i2 = j; //Kanske fel här? J = 5 
+                    if(i1 == -1) i1 = j; 
+                    else i2 = j; 
                 }
             } 
-            
+            */
             //if the images are same ?
                 if(cards[i1].getImageSorce() == cards[i2].getImageSorce()) {
                     
-                    if (p1.isMyTurn()) {
+                    if (p1.isMyTurn()==true) {
                     p1.addScore();
                     System.out.println(p1.addScore());
 
-                    } else if (p2.isMyTurn()) {
+                    } else if (p2.isMyTurn()==true) {
                     p2.addScore();
                     System.out.println(p2.addScore());
                     }
                     
                     //Eliminate the same cards.
-                    cards[i1].button.setVisible(false);
-                    cards[i2].button.setVisible(false);
+                    timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //The cards filp back.
+                            cards[i1].button.setVisible(false);
+                            cards[i2].button.setVisible(false);
+        
+                            timer.stop();
+                        }
+                    });
                     
+                    timer.start();
+                    
+                //If the images are not the same
                 } else {
-                    cards[i1].hideImage();
-                    cards[i2].hideImage(); //1. Andra klicket blir ej synligt (bilden). 
-                    //2. Första kortet blir synligt och går bort direkt när man klickar andra kortet, ifall man har rätt 1 gång blir resten synligt.
                     
-                    /*
                     //If the images are not the same
                     timer = new Timer(1000, new ActionListener() {
                         @Override
@@ -70,14 +82,26 @@ public class BoardView1 implements Runnable {
                     
                     timer.start();
                     
-                     */
+                    if (p1.isMyTurn()==true) {
+                            p1.No();
+                            p2.Yes();
+
+                    } else if (p2.isMyTurn()==true) {
+                            p1.Yes();
+                            p1.No();
+                    }
+
+                    //1. Andra klicket blir ej synligt (bilden). 
+                    //2. Första kortet blir synligt och går bort direkt när man klickar andra kortet
+                    //3. Ifall man har rätt 1 gång blir resten synligt.
+                    
                     } 
             
                 counter = 0;
-            
+                return 0;
         }
 
-    }
+    //}
 
     //giving the button's index (??)
     public int getCardIndex(JButton btn) {
@@ -86,6 +110,7 @@ public class BoardView1 implements Runnable {
             if (cards[i].button == btn) {
                 index = i; 
             }
+
         }
         return index; 
     }
@@ -201,11 +226,18 @@ public class BoardView1 implements Runnable {
                         counter++;
                         //if the card is opened
                         if(!(cards[getCardIndex(btn)].getStatus())) {
+                            
                             if (counter == 1) {
                             cards[getCardIndex(btn)].showImage();
+                            index1 = getCardIndex(btn);
+
                             } else if (counter == 2) { 
                             cards[getCardIndex(btn)].showImage();
-                            check();
+
+                            index2 = getCardIndex(btn);
+                            
+                            System.out.println(index1 +" "+ index2);
+                            check(index1, index2);
                             }
                         }
                         //timer.start();

@@ -21,8 +21,7 @@ public class Player {
     public void setMyTurn(boolean myTurn) {
         this.myTurn = myTurn;
     }
-    
-    
+
     public String getName() {
         return this.name;
     }
@@ -33,5 +32,13 @@ public class Player {
 
     public boolean isMyTurn() {
         return this.myTurn;
+    }
+
+    public boolean No() {
+        return isMyTurn() == false;
+    }
+
+    public boolean Yes() {
+        return isMyTurn() == true;
     }
 }
