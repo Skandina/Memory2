@@ -1,3 +1,6 @@
+//Old codes
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -6,11 +9,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.Timer;
 
 import java.util.Random;
-
-//My code
-
-//Vad vi behöver göra:  Fix this: remove the cards which is same (elimated), restart game, which player is active (player1, player2). 
-//Choose winner by checking the points. 
 
 public class BoardView implements Runnable {
     static JButton[] buttons;

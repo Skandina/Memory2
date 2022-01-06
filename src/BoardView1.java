@@ -15,51 +15,70 @@ public class BoardView1 implements Runnable {
     static Player p2;
     static Card[] cards;
     static int counter = 0;
-
+    static Timer timer;
+    //int i1 = -1;
+    //int i2 = -1;
+    
     public void check() {
     
+        
         if(counter == 2) {
             int i1 = -1;
             int i2 = -1;
-            
-            //Organizing(??)
+        
+            //Organizing(??) // 
             for (int j = 0; j < cards.length; j++) {
-                // which player turned the same cards? 1= player 1, 2=player 2 && 
-                
-                if((cards[j].getResolved() == 0) && (cards[j].getStatus())) {
-                    if(i1 == -1) i1 = j;
-                    else i2 = j;
+                // which player turned the same cards? if getResolved = 1 : player 1, 2 : player 2 && 
+                if((cards[j].getResolved() == 0) && (cards[j].getStatus())) { 
+                    if(i1 == -1) i1 = j; //Kanske fel här? J = 0
+                    else i2 = j; //Kanske fel här? J = 5 
                 }
-            }
+            } 
             
-            counter = 0;
-
-            //if the images are same ? 
-            if(cards[i1].getImageSorce() == cards[i2].getImageSorce()) {
-                
-                if (p1.isMyTurn())
-                {
+            //if the images are same ?
+                if(cards[i1].getImageSorce() == cards[i2].getImageSorce()) {
+                    
+                    if (p1.isMyTurn()) {
                     p1.addScore();
                     System.out.println(p1.addScore());
-                } else if (p2.isMyTurn()) {
+
+                    } else if (p2.isMyTurn()) {
                     p2.addScore();
                     System.out.println(p2.addScore());
-                }
-
-                cards[i1].button.setVisible(false);
-                cards[i2].button.setVisible(false);
-
-
-            } else {
-                for (int j = 0; j < cards.length; j++) {
-                    cards[j].hideImage();
-                }   
+                    }
+                    
+                    //Eliminate the same cards.
+                    cards[i1].button.setVisible(false);
+                    cards[i2].button.setVisible(false);
+                    
+                } else {
+                    cards[i1].hideImage();
+                    cards[i2].hideImage(); //1. Andra klicket blir ej synligt (bilden). 
+                    //2. Första kortet blir synligt och går bort direkt när man klickar andra kortet, ifall man har rätt 1 gång blir resten synligt.
+                    
+                    /*
+                    //If the images are not the same
+                    timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //The cards filp back.
+                            cards[i1].hideImage();
+                            cards[i2].hideImage();
+                            timer.stop();
+                        }
+                    });
+                    
+                    timer.start();
+                    
+                     */
+                    } 
+            
                 counter = 0;
-            }
+            
         }
 
     }
-    
+
     //giving the button's index (??)
     public int getCardIndex(JButton btn) {
         int index = 0;
@@ -110,7 +129,6 @@ public class BoardView1 implements Runnable {
         p2Panel.add(spacer);
         p2Panel.add(p2Score);
 
-
         JPanel panel2 = new JPanel();
         panel2.setBounds(0, 400, 700, 60); //x,y,width,heigth
         panel2.setBackground(Color.blue);
@@ -134,7 +152,6 @@ public class BoardView1 implements Runnable {
             }
         };
         end_game.addActionListener(al);
-
 
         // start
 
@@ -172,7 +189,7 @@ public class BoardView1 implements Runnable {
         //});
         //timer.setRepeats(false);
 
-        //Matching the images to the buttons 
+        //Matching the shuffled index to the buttons 
         for (int i = 0; i < cards.length; i++) {
               cards[i].setIndex(i);
                 cards[i].button.addActionListener(new ActionListener() {
@@ -181,11 +198,15 @@ public class BoardView1 implements Runnable {
 
                         //fixa Koden
                         JButton btn = (JButton) e.getSource();
-                        //if it's not cards[i].false 
+                        counter++;
+                        //if the card is opened
                         if(!(cards[getCardIndex(btn)].getStatus())) {
+                            if (counter == 1) {
                             cards[getCardIndex(btn)].showImage();
-                            counter++;
+                            } else if (counter == 2) { 
+                            cards[getCardIndex(btn)].showImage();
                             check();
+                            }
                         }
                         //timer.start();
                     }

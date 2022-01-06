@@ -6,12 +6,14 @@ public class Card {
     private String label;
     // 1 = exposed , 0 = unexposed
     private boolean status;
+    
     // 0 = unresolved , 1 = resolved by player 1 , 2 = resolved by player 2
     private int resolved;
     private int index;
     private String imageSorce;
     private ImageIcon imageIcone;
     public JButton button;
+    Timer timer;
 
     public Card() {}
 
