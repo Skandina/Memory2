@@ -1,0 +1,30 @@
+Game:
+1. Ska kontrollera BoardView(huvudprogram)
+2. Ska innehålla Main metoden/spellogiken
+3. Hålla koll på vilken spelares tur
+4. Vilka kort som finns
+
+BoardView:
+1. Grafiska gränssnittet
+2. Markerar den aktiva spelaren
+3. Rita ut korten/vänder på korten när någon trycker på det.
+   Representerat som en subklass till JButton
+
+Player:
+1. En spelare är aktiv eller inaktiv (boolean)
+2. Räknar poäng (int)
+3. Namn (String)
+
+Card:
+1. Kort/bild som kan vändas (Visibility) och vara visible, invisible eller eliminated.
+
+Visibility:
+1. Synligheten hos ett kort: VISIBLE, INVISIBLE, ELIMINATED (spelare har hittat par)
+2. Enum
+
+
+
+
+///////////////777
+Första justera new game göra en reset 
+hitta 2 samma bild ska blir gröna button 
