@@ -17,7 +17,7 @@ public class Card {
 
     public Card() {}
 
-    public Card(JButton button, String label, String imageSorce) {
+    public Card(JButton button, String imageSorce) {
         this.button = button;
         this.setLabel(label);
         this.status = false;
