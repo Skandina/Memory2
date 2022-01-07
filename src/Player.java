@@ -14,6 +14,10 @@ public class Player {
         this.name = name;
     }
 
+    public void resetScore() {
+        this.score = 0;
+    }
+
     public int addScore() {
         return this.score++;
     }

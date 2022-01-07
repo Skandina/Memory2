@@ -16,40 +16,29 @@ public class BoardView1 implements Runnable {
     static Card[] cards;
     static int counter = 0;
     static Timer timer;
-
     int index1;
     int index2;
-    //int i1 = -1;
-    //int i2 = -1;
-    
+    JLabel p1Score;
+    JPanel p1Panel;
+    JLabel p2Score;
+    JPanel p2Panel;
+  
     public int check (int index1, int index2) {
         
-        //if(counter == 2) {
-            //int i1 = -1;
-            //int i2 = -1;
 
             int i1 = index1;
             int i2 = index2;
-            /*
-            //Organizing(??) // 
-            for (int j = 0; j < cards.length; j++) {
-                // which player turned the same cards? if getResolved = 1 : player 1, 2 : player 2 && 
-                if((cards[j].getResolved() == 0) && (cards[j].getStatus())) { 
-                    if(i1 == -1) i1 = j; 
-                    else i2 = j; 
-                }
-            } 
-            */
-            //if the images are same ?
+
+            //if the images are same
                 if(cards[i1].getImageSorce() == cards[i2].getImageSorce()) {
                     
                     if (p1.isMyTurn()==true) {
                     p1.addScore();
-                    System.out.println(p1.addScore());
+                    p1Score.setText("Score: " + p1.getScore());
 
                     } else if (p2.isMyTurn()==true) {
                     p2.addScore();
-                    System.out.println(p2.addScore());
+                    p2Score.setText("Score: " + p2.getScore());
                     }
                     
                     //Eliminate the same cards.
@@ -59,11 +48,9 @@ public class BoardView1 implements Runnable {
                             //The cards filp back.
                             cards[i1].button.setVisible(false);
                             cards[i2].button.setVisible(false);
-        
                             timer.stop();
                         }
                     });
-                    
                     timer.start();
                     
                 //If the images are not the same
@@ -83,34 +70,30 @@ public class BoardView1 implements Runnable {
                     timer.start();
                     
                     if (p1.isMyTurn()==true) {
-                            p1.No();
-                            p2.Yes();
+                        p1.No();
+                        p2.Yes();
+                        p1Panel.setBackground(Color.gray);
+                        p2Panel.setBackground(Color.yellow);
 
                     } else if (p2.isMyTurn()==true) {
-                            p1.Yes();
-                            p1.No();
+                        p1.Yes();
+                        p2.No();
+                        p1Panel.setBackground(Color.yellow);
+                        p2Panel.setBackground(Color.gray);
                     }
-
-                    //1. Andra klicket blir ej synligt (bilden). 
-                    //2. Första kortet blir synligt och går bort direkt när man klickar andra kortet
-                    //3. Ifall man har rätt 1 gång blir resten synligt.
                     
-                    } 
+                } 
             
                 counter = 0;
                 return 0;
         }
 
-    //}
-
-    //giving the button's index (??)
     public int getCardIndex(JButton btn) {
         int index = 0;
         for(int i=0; i<16; i++){
             if (cards[i].button == btn) {
                 index = i; 
             }
-
         }
         return index; 
     }
@@ -129,11 +112,11 @@ public class BoardView1 implements Runnable {
 
         JLabel spacer = new JLabel("  ");
 
-        JPanel p1Panel = new JPanel();
+        p1Panel = new JPanel();
         p1Panel.setBounds(0, 0, 150, 200);
-        p1Panel.setBackground(Color.blue);
+        p1Panel.setBackground(Color.yellow);
         JLabel p1Name = new JLabel(p1.getName());
-        JLabel p1Score = new JLabel("Score: " + p1.getScore());
+        p1Score = new JLabel("Score: " + p1.getScore());
         p1Name.setFont(new Font("Verdana", 1, 20));
         p1Score.setFont(new Font("Verdana", 1, 15));
         p1Panel.setBorder(new LineBorder(Color.BLACK));
@@ -141,12 +124,12 @@ public class BoardView1 implements Runnable {
         p1Panel.add(spacer);
         p1Panel.add(p1Score);
 
-        JPanel p2Panel = new JPanel();
+        p2Panel = new JPanel();
         p2Panel.setBounds(0, 200, 150, 200);
-        p2Panel.setBackground(Color.yellow);
+        p2Panel.setBackground(Color.gray);
         JLabel p2Name = new JLabel(p2.getName());
-        JLabel p2Score = new JLabel("Score: " + p2.getScore());
-        // lägga score till andra line
+        p2Score = new JLabel("Score: " + p2.getScore());
+
         p2Name.setFont(new Font("Verdana", 1, 20));
         p2Score.setFont(new Font("Verdana", 1, 15));
         p2Panel.setBorder(new LineBorder(Color.BLACK));
@@ -178,13 +161,50 @@ public class BoardView1 implements Runnable {
         };
         end_game.addActionListener(al);
 
-        // start
+        // restart game button
+        ActionListener a2 = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                List<Card> cardsList = Arrays.asList(cards);
+                Collections.shuffle(cardsList);
+                cardsList.toArray(cards);
+                
+                for (int i = 0; i < cards.length; i++) {
+                    gridPanel.remove(cards[i].button);
+                }
+                
+                for (int i = 0; i < cards.length; i++) {
+                    gridPanel.add(cards[i].button);
+                }
+
+                //Score처음으로 
+                p1.resetScore();
+                p2.resetScore();
+                p1Score.setText("Score: " + p1.getScore());
+                p2Score.setText("Score: " + p2.getScore());
+
+                //카드 다시 다 보이게 
+                for(int i = 0; i < cards.length; i++) {
+                    cards[i].button.setVisible(true);
+                    cards[i].hideImage();
+                }
+                //Player 1 시작 
+                p1.Yes();
+                p2.No();
+                p1Panel.setBackground(Color.yellow);
+                p2Panel.setBackground(Color.gray);
+                
+                //Panel리셋?
+                gridPanel.repaint();
+                System.out.println("44444");
+
+            }
+        };
+        new_game.addActionListener(a2);
 
         cards = new Card[16];
-        //ImageIcon[] imageIcons = new ImageIcon[16];
-        //Timer[] timers  = new Timer[16];
 
-        // creat imgicon
         String[] images = {
             "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
             "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
@@ -200,19 +220,10 @@ public class BoardView1 implements Runnable {
             cards[j] = new Card(new JButton(), names[j], images[j]);
         }
 
-        //Changing the array into a list to shuffle. 
+        //Shuffle the buttons.
         List<Card> cardsList = Arrays.asList(cards);
-		//Shuffle it. 
         Collections.shuffle(cardsList);
-		//Changing the list into the array back again. 
         cardsList.toArray(cards);
-
-        //Timer timer = new Timer(5000, new ActionListener() {
-        //    public void actionPerformed(ActionEvent e) {
-        //        cards[0].clearImage();
-        //    }
-        //});
-        //timer.setRepeats(false);
 
         //Matching the shuffled index to the buttons 
         for (int i = 0; i < cards.length; i++) {
@@ -221,7 +232,6 @@ public class BoardView1 implements Runnable {
 
                     public void actionPerformed(ActionEvent e) {
 
-                        //fixa Koden
                         JButton btn = (JButton) e.getSource();
                         counter++;
                         //if the card is opened
@@ -233,20 +243,14 @@ public class BoardView1 implements Runnable {
 
                             } else if (counter == 2) { 
                             cards[getCardIndex(btn)].showImage();
-
                             index2 = getCardIndex(btn);
                             
-                            System.out.println(index1 +" "+ index2);
                             check(index1, index2);
                             }
                         }
-                        //timer.start();
                     }
                 });
         }
-
-        // end
-
 
         for (int i = 0; i < cards.length; i++) {
             gridPanel.add(cards[i].button);
@@ -267,3 +271,6 @@ public class BoardView1 implements Runnable {
     }
 
 }
+
+//1초안에 누르면 안되는거  
+//Visibility 활용
