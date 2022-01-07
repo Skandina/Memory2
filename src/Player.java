@@ -14,14 +14,14 @@ public class Player {
         this.name = name;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public int addScore() {
+        return ++this.score;
     }
 
     public void setMyTurn(boolean myTurn) {
         this.myTurn = myTurn;
     }
-        //för att få 
+    
     public String getName() {
         return this.name;
     }
@@ -30,7 +30,7 @@ public class Player {
         return this.score;
     }
 
-    public boolean getMyTurn() {
+    public boolean isMyTurn() {
         return this.myTurn;
     }
 }

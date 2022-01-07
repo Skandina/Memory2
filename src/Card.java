@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.Image;
-
 public class Card {
 
-    private String label;
-    // 1 = exposed , 0 = unexposed
+    // true = exposed , false = unexposed
     private boolean status;
     // 0 = unresolved , 1 = resolved by player 1 , 2 = resolved by player 2
     private int resolved;
@@ -15,19 +13,13 @@ public class Card {
 
     public Card() {}
 
-    public Card(JButton button, String label, String imageSorce) {
+    public Card(JButton button, String imageSorce) {
         this.button = button;
-        this.setLabel(label);
         this.status = false;
         this.resolved = 0;
         this.imageSorce = imageSorce;
         Image image = ((new ImageIcon(imageSorce)).getImage()).getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH); // scale it smoothly
         this.imageIcone = new ImageIcon(image);
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-        button.setLabel(label);
     }
 
     public void setStatus(boolean status) {
@@ -40,6 +32,7 @@ public class Card {
 
     public void setIndex(int index) {
         this.index = index;
+       // button.setText(this.index);
     }
 
     public void setButton(JButton button) {
@@ -52,10 +45,6 @@ public class Card {
 
     public void setImageIcon(ImageIcon imageIcone) {
         this.imageIcone = imageIcone;
-    }
-
-    public String getLabel() {
-        return this.label;
     }
 
     public boolean getStatus() {
@@ -83,13 +72,13 @@ public class Card {
     }
 
     public void showImage() {
-        this.button.setLabel("");
+        this.button.setText("");
         this.button.setIcon(imageIcone);
         this.status = true;
     }
 
-    public void clearImage() {
-        this.button.setLabel(label);
+    public void hideImage() {
+       // this.button.setText(this.index);
         this.button.setIcon(null);
         this.status = false;
     }

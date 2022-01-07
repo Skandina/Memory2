@@ -3,14 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
-import javax.swing.Timer;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-//Sorry if I deleted too many uncommented codes, I edited a lot and wanted to reorganize so deleted them randomly. 
-//so make sure to copy and paste from your old project before you pull if you keep your code that I removed
 
 public class BoardView implements Runnable {
 
@@ -18,18 +13,18 @@ public class BoardView implements Runnable {
     static Player p2;
     static Card[] cards;
     static int counter = 0;
+    static JPanel p1Panel;
+    static JLabel p1Score;
+    static JPanel p2Panel;
+    static JLabel p2Score;
+    static int[] indexs;
 
-    /*
-    int buttonIndexSave1 = 0; // First Opened Card index : 0-15
-    int buttonIndexSave2 = 0; // Second Opened card index : 0-15 
-    Timer timer;
-    int tryCount = 0; // Try count
-    int successCount = 0; 
-    */
-
+    // Funcation check how man clicks for the player
     public void check() {
 
         if(counter == 2) {
+
+            counter = 0;
             int i1 = -1;
             int i2 = -1;
             for (int j = 0; j < cards.length; j++) {
@@ -40,12 +35,41 @@ public class BoardView implements Runnable {
             }
 
             if(cards[i1].getImageSorce() == cards[i2].getImageSorce()) {
-                System.out.println("success");
+
+                if (p1.isMyTurn()) {
+
+                    cards[i1].setResolved(1);
+                    cards[i2].setResolved(1);
+                    p1Score.setText("Score: " + p1.addScore());
+
+
+                } else {
+
+                    cards[i1].setResolved(2);
+                    cards[i2].setResolved(2);
+                    p2Score.setText("Score: " + p2.addScore());
+                }
+
             } else {
-                for (int j = 0; j < cards.length; j++) {
-                    cards[j].clearImage();
-                }   counter = 0;
+
+                cards[i1].hideImage();
+                cards[i2].hideImage();
+
+                if(p1.isMyTurn()) {
+
+                    p1.setMyTurn(false);
+                    p2.setMyTurn(true);
+                    p1Panel.setBackground(Color.blue);
+                    p2Panel.setBackground(Color.yellow);
+                } else {
+
+                    p2.setMyTurn(false);
+                    p1.setMyTurn(true);
+                    p2Panel.setBackground(Color.blue);
+                    p1Panel.setBackground(Color.yellow);
+                }
             }
+
         }
 
     }
@@ -70,28 +94,27 @@ public class BoardView implements Runnable {
         gridPanel.setBackground(Color.blue);
 
         p1 = new Player("Kevenn", true);
-        p2 = new Player("Dinaaa", false);
+        p2 = new Player("Dinaaa", false);        
 
         JLabel spacer = new JLabel("  ");
 
-        JPanel p1Panel = new JPanel();
+        p1Panel = new JPanel();
         p1Panel.setBounds(0, 0, 150, 200);
         p1Panel.setBackground(Color.blue);
         JLabel p1Name = new JLabel(p1.getName());
-        JLabel p1Score = new JLabel("Score: " + p1.getScore());
+        p1Score = new JLabel("Score: " + p1.getScore());
         p1Name.setFont(new Font("Verdana", 1, 20));
         p1Score.setFont(new Font("Verdana", 1, 15));
         p1Panel.setBorder(new LineBorder(Color.BLACK));
         p1Panel.add(p1Name);
         p1Panel.add(spacer);
         p1Panel.add(p1Score);
-
-        JPanel p2Panel = new JPanel();
+        //Creat panel for player 2 
+        p2Panel = new JPanel();
         p2Panel.setBounds(0, 200, 150, 200);
         p2Panel.setBackground(Color.yellow);
         JLabel p2Name = new JLabel(p2.getName());
-        JLabel p2Score = new JLabel("Score: " + p2.getScore());
-        // lägga score till andra line
+        p2Score = new JLabel("Score: " + p2.getScore());
         p2Name.setFont(new Font("Verdana", 1, 20));
         p2Score.setFont(new Font("Verdana", 1, 15));
         p2Panel.setBorder(new LineBorder(Color.BLACK));
@@ -124,14 +147,8 @@ public class BoardView implements Runnable {
         };
         end_game.addActionListener(al);
 
+        cards = new Card[16]; 
 
-        // start
-
-        cards = new Card[16];
-        ImageIcon[] imageIcons = new ImageIcon[16];
-        //Timer[] timers  = new Timer[16];
-
-        // creat imgicon
         String[] images = {
             "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
             "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
@@ -139,12 +156,8 @@ public class BoardView implements Runnable {
             "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
         };
 
-        String[] names = { 
-            " ", " ", " ", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16" 
-        };
-
         for (int j = 0; j < cards.length; j++) {
-            cards[j] = new Card(new JButton(), names[j], images[j]);
+            cards[j] = new Card(new JButton(), images[j]);
         }
 
         //Changing the array into a list to shuffle. 
@@ -154,46 +167,28 @@ public class BoardView implements Runnable {
 		//Changing the list into the array back again. 
         cardsList.toArray(cards);
 
-        for (int j = 0; j < cards.length; j++) {
-            cards[j].setIndex(j);
-        }
-
-        //Timer timer = new Timer(5000, new ActionListener() {
-        //    public void actionPerformed(ActionEvent e) {
-        //        cards[0].clearImage();
-        //    }
-        //});
-        //timer.setRepeats(false);
-
-        //Matching the images to the buttons 
         for (int i = 0; i < cards.length; i++) {
+
+            cards[i].setIndex(i);
 
             cards[i].button.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
 
-                    //fixa Koden
-                    JButton btn = (JButton) e.getSource();
-                    if(!(cards[getCardIndex(btn)].getStatus())) {
-                        cards[getCardIndex(btn)].showImage();
+                    int idx = getCardIndex((JButton) e.getSource());
+                    if(!(cards[idx].getStatus())) {
+                        cards[idx].showImage();
                         counter++;
                         check();
                     }
-                    //timer.start();
                 }
             });
-        }
 
-        // end
-
-
-        for (int i = 0; i < cards.length; i++) {
             gridPanel.add(cards[i].button);
         }
 
         panel2.add(new_game);
         panel2.add(end_game);
-
         frame.add(gridPanel);
         frame.add(panel2);
         frame.add(p1Panel);
