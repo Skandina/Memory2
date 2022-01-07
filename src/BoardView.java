@@ -1,6 +1,3 @@
-//Old codes
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -8,156 +5,140 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.Timer;
 
-import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class BoardView implements Runnable {
-    static JButton[] buttons;
 
-    int openCount = 0; // Opened Card Count : 0, 1, 2
-    int buttonIndexSave1 = 0; // First Opened Card index : 0-15
-    int buttonIndexSave2 = 0; // Second Opened card index : 0-15
-    Timer timer;
-    int successCount = 0;
-    ImageIcon[] iconList = new ImageIcon[16];
-    Player p1 = new Player("Kevenn", true);
-    Player p2 = new Player("Dinaaa", false);
+    static Player p1;
+    static Player p2;
+    static Card[] cards;
+    static int counter = 0;
+    static Timer timer;
+    int index1;
+    int index2;
+    JLabel p1Score;
+    JPanel p1Panel;
+    JLabel p2Score;
+    JPanel p2Panel;
+  
+    public int check (int index1, int index2) {
+        
+            int i1 = index1;
+            int i2 = index2;
 
-    static String[] images = {
-        "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-        "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
-        "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
-        "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
-    };
+            //if the images are same
+                if(cards[i1].getImageSorce() == cards[i2].getImageSorce()) {
+                    
+                    if (p1.isMyTurn()==true) {
+                    p1.addScore();
+                    p1Score.setText("Score: " + p1.getScore());
 
-        //Button's name array 
-        String[] names = {
-            "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"
-    };
+                    } else if (p2.isMyTurn()==true) {
+                    p2.addScore();
+                    p2Score.setText("Score: " + p2.getScore());
+                    }
+                    
+                    //Eliminate the same cards.
+                    timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //The cards filp back.
+                            cards[i1].button.setVisible(false);
+                            cards[i2].button.setVisible(false);
+                            timer.stop();
+                        }
+                    });
+                    timer.start();
+                    
+                //If the images are not the same
+                }
+                
+                 else {//If the images are not the same
+                    timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //The cards filp back.
+                            cards[i1].hideImage();
+                            cards[i2].hideImage();
+                            timer.stop();
+                        }
+                    });
+                    
+                    timer.start();
+                    
+                    if (p1.isMyTurn()==true) {
+                        p1.No();
+                        p2.Yes();
+                        p1Panel.setBackground(Color.gray);
+                        p2Panel.setBackground(Color.yellow);
 
-    // The method to get button's Index
-    public int getbuttonIndex(JButton btn) {
+                    } else if (p2.isMyTurn()==true) {
+                        p1.Yes();
+                        p2.No();
+                        p1Panel.setBackground(Color.yellow);
+                        p2Panel.setBackground(Color.gray);
+                    }
+                    
+                } 
+            
+                counter = 0;
+                return 0;
+        }
+
+    public int getCardIndex(JButton btn) {
         int index = 0;
-        for (int i = 0; i < 16; i++) {
-            if (buttons[i] == btn) {
-                index = i;
+        for(int i=0; i<16; i++){
+            if (cards[i].button == btn) {
+                index = i; 
             }
         }
-        return index;
+        return index; 
     }
 
-    //The method to edit picture's size.
-    static ImageIcon changeImage(String filename) {
-            ImageIcon icon = new ImageIcon(filename);
-            Image originImage = icon.getImage();
-            Image changedImage = originImage.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
-            ImageIcon new_icon = new ImageIcon(changedImage);
-            return new_icon;    
-    }
-
-    // The method for timer and to flip back the cards.
-    public void flipIt() {
-        // Timer 1 second
-        timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openCount = 0;
-                buttons[buttonIndexSave1].setIcon(null);
-                buttons[buttonIndexSave2].setIcon(null);
-                timer.stop();
-            }
-
-        });
-        timer.start();
-    }
-
-    public void removeIt() {
-        //Timer 1 second 
-        timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openCount = 0;
-                buttons[buttonIndexSave1].setVisible(false);
-                buttons[buttonIndexSave2].setVisible(false);
-                timer.stop();
-            }
-
-        });
-        timer.start();
-    }
-
-    //The method to shuffle. 
-    public void mixCard() {
-        Random rand = new Random();
-        for(int i=0; i<1000; i++) { 
-            int random = rand.nextInt(15)+1; 
-            String temp = images[0];
-            images[0] = images[random];
-            images[random] = temp;
-        }
-    
-        for(int i=0; i<16; i++)
-            System.out.println(images[i]);
-    }
-    
-
-    // Checking the cards if it's the same.
-    public boolean checkCard(int index1, int index2) {
-        // clicked same postion ?
-        if (index1 == index2) {
-            System.out.println("index1 == index2");
-            return false;
-
-        // clicked same images ?
-        } else if(images[index1].equals(images[index2])) {
-            System.out.println("true");
-            return true;
-
-        // clicked different images ?
-        } else {
-            return false;
-        }
-    }
-
-    
     public void run() {
 
-        // Setting the frame and panels.
         JFrame frame = new JFrame("Memory-game");
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 4, 10, 10));
-        panel.setBounds(150, 0, 530, 400); // x,y,width,heigth
-        panel.setBackground(Color.blue);
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(4, 4, 10, 10));
+        gridPanel.setBounds(150, 0, 530, 400); //x,y,width,heigth
+        gridPanel.setBackground(Color.blue);
+
+        p1 = new Player("Kevenn", true);
+        p2 = new Player("Dinaaa", false);
+
+        JLabel spacer = new JLabel("  ");
+
+        p1Panel = new JPanel();
+        p1Panel.setBounds(0, 0, 150, 200);
+        p1Panel.setBackground(Color.yellow);
+        JLabel p1Name = new JLabel(p1.getName());
+        p1Score = new JLabel("Score: " + p1.getScore());
+        p1Name.setFont(new Font("Verdana", 1, 20));
+        p1Score.setFont(new Font("Verdana", 1, 15));
+        p1Panel.setBorder(new LineBorder(Color.BLACK));
+        p1Panel.add(p1Name);
+        p1Panel.add(spacer);
+        p1Panel.add(p1Score);
+
+        p2Panel = new JPanel();
+        p2Panel.setBounds(0, 200, 150, 200);
+        p2Panel.setBackground(Color.gray);
+        JLabel p2Name = new JLabel(p2.getName());
+        p2Score = new JLabel("Score: " + p2.getScore());
+
+        p2Name.setFont(new Font("Verdana", 1, 20));
+        p2Score.setFont(new Font("Verdana", 1, 15));
+        p2Panel.setBorder(new LineBorder(Color.BLACK));
+        p2Panel.add(p2Name);
+        p2Panel.add(spacer);
+        p2Panel.add(p2Score);
 
         JPanel panel2 = new JPanel();
-        panel2.setBounds(0, 400, 700, 60); // x,y,width,heigth
+        panel2.setBounds(0, 400, 700, 60); //x,y,width,heigth
         panel2.setBackground(Color.blue);
-
-        JPanel panel3 = new JPanel();
-        panel3.setBounds(0, 0, 150, 200);
-        panel3.setBackground(Color.YELLOW);
-
-        JPanel panel4 = new JPanel();
-        panel4.setBounds(0, 200, 150, 200);
-        panel4.setBackground(Color.GRAY);
-
-        JLabel label1 = new JLabel("Player 1");
-        label1.setFont(new Font("Verdana", 1, 20));
-        panel3.setBorder(new LineBorder(Color.BLACK));
-        panel3.add(label1);
-
-        JLabel labelscore1 = new JLabel("Score :");
-        labelscore1.setFont(new Font("Verdana", 1, 20));
-        panel3.add((labelscore1), BorderLayout.SOUTH);
-
-        JLabel label2 = new JLabel("Player 2");
-        label2.setFont(new Font("Verdana", 1, 20));
-        panel4.setBorder(new LineBorder(Color.BLACK));
-        panel4.add(label2);
-
-        JLabel labelscore2 = new JLabel("Score :");
-        labelscore2.setFont(new Font("Verdana", 1, 20));
-        panel4.add(labelscore2);
 
         JButton new_game = new JButton("New");
         JButton end_game = new JButton("End");
@@ -169,8 +150,8 @@ public class BoardView implements Runnable {
         end_game.setPreferredSize(new Dimension(75, 25));
         new_game.setBorder(new LineBorder(Color.BLACK));
         end_game.setBorder(new LineBorder(Color.BLACK));
-
-        // Exit game button
+        
+        //Exit game button
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -178,107 +159,107 @@ public class BoardView implements Runnable {
             }
         };
         end_game.addActionListener(al);
-        
-        // Restarts the game
+
+        // restart game button
         ActionListener a2 = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    frame.repaint();
+                
+                List<Card> cardsList = Arrays.asList(cards);
+                Collections.shuffle(cardsList);
+                cardsList.toArray(cards);
+                
+                for (int i = 0; i < cards.length; i++) {
+                    gridPanel.remove(cards[i].button);
+                }
+                
+                for (int i = 0; i < cards.length; i++) {
+                    gridPanel.add(cards[i].button);
+                }
+
+                //Reset the score. 
+                p1.resetScore();
+                p2.resetScore();
+                p1Score.setText("Score: " + p1.getScore());
+                p2Score.setText("Score: " + p2.getScore());
+
+                //Reset the buttons.
+                for(int i = 0; i < cards.length; i++) {
+                    cards[i].button.setVisible(true);
+                    cards[i].hideImage();
+                }
+                //Reset the players.
+                p1.Yes();
+                p2.No();
+                p1Panel.setBackground(Color.yellow);
+                p2Panel.setBackground(Color.gray);
+                
+                //Reset the panel.
+                gridPanel.repaint();
 
             }
         };
         new_game.addActionListener(a2);
 
-        buttons = new JButton[16];
+        cards = new Card[16];
 
-        //Shuffle the cards.
-        mixCard();
+        String[] images = {
+            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png",
+            "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
+            "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
+        };
 
-        for (int j = 0; j < buttons.length; j++) {
-            buttons[j] = new JButton(names[j]);
+        for (int j = 0; j < cards.length; j++) {
+            cards[j] = new Card(new JButton(), images[j]);
         }
 
-        // Matching the images to the buttons
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i].addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    
-                    if (openCount == 2) {
-                        return;
-                    }
+        //Shuffle the buttons.
+        List<Card> cardsList = Arrays.asList(cards);
+        Collections.shuffle(cardsList);
+        cardsList.toArray(cards);
 
-                    JButton btn = (JButton) e.getSource();
-                    int index = getbuttonIndex(btn);
-                    btn.setIcon(changeImage(images[index]));
+        //Matching the shuffled index to the buttons 
+        for (int i = 0; i < cards.length; i++) {
+              cards[i].setIndex(i);
+                cards[i].button.addActionListener(new ActionListener() {
 
-                    openCount++;
+                    public void actionPerformed(ActionEvent e) {
 
-                    if (openCount == 1) {
-                        buttonIndexSave1 = index;
-                        System.out.println(buttonIndexSave1);
+                        JButton btn = (JButton) e.getSource();
+                        counter++;
 
-                    } else if (openCount == 2) {
-                        buttonIndexSave2 = index;
-                        System.out.println(buttonIndexSave2);
-
-                        boolean getScore = checkCard(buttonIndexSave1, buttonIndexSave2);
-
-                        // Will the player get score? 
-                        if (getScore == true) {
-                            openCount = 0; // reset open Count.
-                            successCount = 1; // How many times the players succeeded
+                        //if the card is opened
+                        if(!(cards[getCardIndex(btn)].getStatus())) {
                             
-                            /*
-                            //if player 1 active, => get player 1 only 1 point. 
-                            //if player 1 get one point, the active boolean is still true.
-                            p1.setMyTurn(true);
-                            p2.setMyTurn(false);
-                            System.out.println(p1.getmyTurn);
-
-                            if ((p1.getmyTurn)=(true)) {
-                            */
-                            labelscore1.setText("Score : " + successCount++);
-                            /*
-                            } else if ((p2.getmyTurn()) == true) {
-                                labelscore2.setText("Score : " + successCount++);
+                            if (counter == 1) {
+                            cards[getCardIndex(btn)].showImage();
+                            index1 = getCardIndex(btn);
+                            } 
+            
+                            else if (counter == 2) { 
+                            cards[getCardIndex(btn)].showImage();
+                            index2 = getCardIndex(btn);
+                            
+                            check(index1, index2);
                             }
-                            */
 
-                            removeIt();
-
-                            if (successCount == 8) {
-                                // Todo..
-                                // setText : Game Over! The winner is ..
-                                // reset game
-                            }
-                            
-                        } else {
-                            flipIt();
-
-                            //active boolean is changed true => false or false => true 
-                            
-
-
-
-                        } 
+                        }
                     }
-
-                }
-
-            });
+                });
         }
 
-        for (JButton button : buttons) {
-            panel.add(button);
+        for (int i = 0; i < cards.length; i++) {
+            gridPanel.add(cards[i].button);
         }
 
         panel2.add(new_game);
         panel2.add(end_game);
 
-        frame.add(panel);
+        frame.add(gridPanel);
         frame.add(panel2);
-        frame.add(panel3);
-        frame.add(panel4);
+        frame.add(p1Panel);
+        frame.add(p2Panel);
         frame.setSize(700, 500);
         frame.setLayout(null);
         frame.setVisible(true);

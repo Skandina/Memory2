@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class BoardView1 implements Runnable {
+public class BoardView implements Runnable {
 
     static Player p1;
     static Player p2;
@@ -210,16 +210,6 @@ public class BoardView1 implements Runnable {
             "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
         };
 
-        /*
-        String[] names = { 
-            "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16" 
-        };
-        
-
-        for (int j = 0; j < cards.length; j++) {
-            cards[j] = new Card(new JButton(), names[j], images[j]);
-        }
-        */
         for (int j = 0; j < cards.length; j++) {
             cards[j] = new Card(new JButton(), images[j]);
         }

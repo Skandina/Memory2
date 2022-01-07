@@ -29,7 +29,7 @@ public class Card {
 
     public void setLabel(String label) {
         this.label = label;
-        button.setLabel(label);
+        button.setText(label);
     }
 
     public void setStatus(boolean status) {
@@ -85,13 +85,13 @@ public class Card {
     }
 
     public void showImage() {
-        this.button.setLabel("");
+        this.button.setText("");
         this.button.setIcon(imageIcone);
         this.status = true;
     }
 
     public void hideImage() {
-        this.button.setLabel(label);
+        this.button.setText(label);
         this.button.setIcon(null);
         this.status = false;
     }
