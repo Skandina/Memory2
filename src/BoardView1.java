@@ -178,26 +178,25 @@ public class BoardView1 implements Runnable {
                     gridPanel.add(cards[i].button);
                 }
 
-                //Score처음으로 
+                //Reset the score. 
                 p1.resetScore();
                 p2.resetScore();
                 p1Score.setText("Score: " + p1.getScore());
                 p2Score.setText("Score: " + p2.getScore());
 
-                //카드 다시 다 보이게 
+                //Reset the buttons.
                 for(int i = 0; i < cards.length; i++) {
                     cards[i].button.setVisible(true);
                     cards[i].hideImage();
                 }
-                //Player 1 시작 
+                //Reset the players.
                 p1.Yes();
                 p2.No();
                 p1Panel.setBackground(Color.yellow);
                 p2Panel.setBackground(Color.gray);
                 
-                //Panel리셋?
+                //Reset the panel.
                 gridPanel.repaint();
-                System.out.println("44444");
 
             }
         };
@@ -212,12 +211,18 @@ public class BoardView1 implements Runnable {
             "src/img/fruit05.png", "src/img/fruit06.png", "src/img/fruit07.png", "src/img/fruit08.png"
         };
 
+        /*
         String[] names = { 
             "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16" 
         };
+        
 
         for (int j = 0; j < cards.length; j++) {
             cards[j] = new Card(new JButton(), names[j], images[j]);
+        }
+        */
+        for (int j = 0; j < cards.length; j++) {
+            cards[j] = new Card(new JButton(), images[j]);
         }
 
         //Shuffle the buttons.
@@ -271,6 +276,5 @@ public class BoardView1 implements Runnable {
     }
 
 }
-
-//1초안에 누르면 안되는거  
-//Visibility 활용
+//have to fix the error that happen when we click the same button & when we click many cards at the same time in 1 second. 
+//have to fullfill "Visibility.java"

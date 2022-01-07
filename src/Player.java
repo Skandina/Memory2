@@ -13,11 +13,9 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
-
     public void resetScore() {
         this.score = 0;
     }
-
     public int addScore() {
         return this.score++;
     }
@@ -25,7 +23,8 @@ public class Player {
     public void setMyTurn(boolean myTurn) {
         this.myTurn = myTurn;
     }
-
+    
+    
     public String getName() {
         return this.name;
     }
@@ -39,10 +38,10 @@ public class Player {
     }
 
     public boolean No() {
-        return isMyTurn() == false;
+        return this.myTurn = false;
     }
 
     public boolean Yes() {
-        return isMyTurn() == true;
+        return this.myTurn = true;
     }
 }
