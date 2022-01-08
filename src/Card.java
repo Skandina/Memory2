@@ -32,7 +32,7 @@ public class Card {
 
     public void setIndex(int index) {
         this.index = index;
-       // button.setText(this.index);
+        this.button.setText((String.valueOf(this.index)));
     }
 
     public void setButton(JButton button) {
@@ -78,7 +78,7 @@ public class Card {
     }
 
     public void hideImage() {
-       // this.button.setText(this.index);
+        this.button.setText((String.valueOf(this.index)));
         this.button.setIcon(null);
         this.status = false;
     }

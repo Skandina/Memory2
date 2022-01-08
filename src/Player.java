@@ -14,6 +14,11 @@ public class Player {
         this.name = name;
     }
 
+    public int setScore(int score) {
+        this.score = score;
+        return this.score;
+    }
+
     public int addScore() {
         return ++this.score;
     }

@@ -17,7 +17,6 @@ public class BoardView implements Runnable {
     static JLabel p1Score;
     static JPanel p2Panel;
     static JLabel p2Score;
-    static int[] indexs;
 
     // Funcation check how man clicks for the player
     public void check() {
@@ -41,6 +40,11 @@ public class BoardView implements Runnable {
                     cards[i1].setResolved(1);
                     cards[i2].setResolved(1);
                     p1Score.setText("Score: " + p1.addScore());
+                    // if we eant to hide the button card
+                    /*
+                    cards[i1].button.setVisible(false);
+                    cards[i2].button.setVisible(false);
+                    */
 
 
                 } else {
@@ -122,7 +126,6 @@ public class BoardView implements Runnable {
         p2Panel.add(spacer);
         p2Panel.add(p2Score);
 
-
         JPanel panel2 = new JPanel();
         panel2.setBounds(0, 400, 700, 60); //x,y,width,heigth
         panel2.setBackground(Color.blue);
@@ -138,16 +141,35 @@ public class BoardView implements Runnable {
         new_game.setBorder(new LineBorder(Color.BLACK));
         end_game.setBorder(new LineBorder(Color.BLACK));
         
+        cards = new Card[16];
+
         //Exit game button
-        ActionListener al = new ActionListener() {
+        ActionListener exit = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         };
-        end_game.addActionListener(al);
+        end_game.addActionListener(exit);
 
-        cards = new Card[16]; 
+        ActionListener restart = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                for (int j = 0; j < cards.length; j++) {
+                    cards[j].hideImage();
+                    cards[j].setResolved(0);
+                }
+
+                p1.setMyTurn(true);
+                p2.setMyTurn(false);
+                p1Panel.setBackground(Color.yellow);
+                p2Panel.setBackground(Color.blue);
+                p1Score.setText("Score: " + p1.setScore(0));
+                p2Score.setText("Score: " + p2.setScore(0));
+            }
+        };
+        new_game.addActionListener(restart);
 
         String[] images = {
             "src/img/fruit01.png", "src/img/fruit02.png", "src/img/fruit03.png", "src/img/fruit04.png",
