@@ -106,8 +106,8 @@ public class BoardView implements Runnable {
         gridPanel.setBounds(150, 0, 530, 400); //x,y,width,heigth
         gridPanel.setBackground(Color.blue);
 
-        p1 = new Player("Kevenn", true);
-        p2 = new Player("Dinaaa", false);
+        p1 = new Player("Player1", true);
+        p2 = new Player("Player2", false);
 
         JLabel spacer = new JLabel("  ");
 
